@@ -1,23 +1,43 @@
 package starch
 
-import "io"
+import (
+	"bytes"
+	"io"
+	"net/http"
+
+	"github.com/ucarion/urlpath"
+)
 
 type Context interface {
 	io.Writer
 	io.Reader
 	GetParam(key string) string
 	GetVar(key string) any
-	Next(Component) error
 	SetVar(key string, value any)
 	WriteHeader(string, string)
 	WriteStatus(int)
 	WriteString(string, ...any) error
 }
 
-func GetVar[T any](c Context, key string, defaultv ...T) T {
-	v := c.GetVar(key)
-	if v == nil && len(defaultv) > 0 {
-		return defaultv[0]
-	}
-	return v.(T)
+type AppContext struct {
+	Routes map[*urlpath.Path]Route
 }
+
+type HttpContext struct {
+	route    Route
+	request  *http.Request
+	response http.ResponseWriter
+	params   map[string]string
+	vars     map[string]any
+}
+
+type MemoryContext struct {
+	Headers map[string]string
+	Params  map[string]string
+	Sink    bytes.Buffer
+	Source  bytes.Buffer
+	Status  int
+	Vars    map[string]any
+}
+
+type NoopContext struct{}

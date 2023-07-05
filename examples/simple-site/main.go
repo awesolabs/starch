@@ -5,7 +5,7 @@ import . "github.com/awesolabs/starch"
 var app = App{
 	Route{
 		Path: "/",
-		Handle: Layout{
+		Handle: &Layout{
 			Content: Div{
 				H3{Text{`Home Page`}},
 				If{Cond: hasName, Then: Div{
@@ -16,7 +16,7 @@ var app = App{
 	},
 	Route{
 		Path: "/about",
-		Handle: Layout{
+		Handle: &Layout{
 			Content: Div{
 				H3{Text{`About Page`}},
 			},
@@ -34,7 +34,7 @@ type Layout struct {
 	Content Component
 }
 
-func (t Layout) Render(c Context) error {
+func (t *Layout) Render(c Context) error {
 	template := Html{
 		Head{},
 		Body{
@@ -42,7 +42,7 @@ func (t Layout) Render(c Context) error {
 			t.Content,
 		},
 	}
-	return c.Next(template)
+	return template.Render(c)
 }
 
 func hasName(c Context) bool {

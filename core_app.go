@@ -2,8 +2,6 @@ package starch
 
 import "net/http"
 
-type App []Component
-
 func (t App) Run() error {
 	ctx := NewAppContext()
 	for _, child := range t {

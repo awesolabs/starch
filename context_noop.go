@@ -1,7 +1,5 @@
 package starch
 
-type NoopContext struct{}
-
 func NewNoopContext() *NoopContext {
 	return &NoopContext{}
 }

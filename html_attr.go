@@ -2,13 +2,7 @@ package starch
 
 import "strings"
 
-type Attribute interface {
-	Component
-	Attribute()
-}
-
-func (t Attr) Attribute() {
-}
+func (t Attr) Attribute() {}
 
 func (t Attr) Render(c Context) error {
 	if len(t) == 0 {
@@ -17,8 +11,7 @@ func (t Attr) Render(c Context) error {
 	return renderattr(c, t[0], t[1:]...)
 }
 
-func (t Class) Attribute() {
-}
+func (t Class) Attribute() {}
 
 func (t Class) Render(c Context) error {
 	if len(t) == 0 {

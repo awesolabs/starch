@@ -1,18 +1,8 @@
 package starch
 
 import (
-	"bytes"
 	"fmt"
 )
-
-type MemoryContext struct {
-	Headers map[string]string
-	Params  map[string]string
-	Sink    bytes.Buffer
-	Source  bytes.Buffer
-	Status  int
-	Vars    map[string]any
-}
 
 func NewMemoryContext() *MemoryContext {
 	return &MemoryContext{

@@ -2,16 +2,7 @@ package starch
 
 import (
 	"fmt"
-	"net/http"
 )
-
-type HttpContext struct {
-	route    Route
-	request  *http.Request
-	response http.ResponseWriter
-	params   map[string]string
-	vars     map[string]any
-}
 
 func NewHttpContext() *HttpContext {
 	return &HttpContext{
@@ -47,10 +38,6 @@ func (t *HttpContext) WriteStatus(code int) {
 func (t *HttpContext) WriteString(s string, args ...any) error {
 	_, err := t.response.Write([]byte(fmt.Sprintf(s, args...)))
 	return err
-}
-
-func (t *HttpContext) Next(c Component) error {
-	return c.Render(t)
 }
 
 func (t *HttpContext) With(f func(*HttpContext)) *HttpContext {

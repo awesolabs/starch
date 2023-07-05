@@ -6,10 +6,6 @@ import (
 	"github.com/ucarion/urlpath"
 )
 
-type AppContext struct {
-	Routes map[*urlpath.Path]Route
-}
-
 func NewAppContext() *AppContext {
 	return &AppContext{
 		Routes: map[*urlpath.Path]Route{},
