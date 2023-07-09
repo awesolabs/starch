@@ -1,6 +1,8 @@
 package starch
 
-import "strings"
+import (
+	"strings"
+)
 
 type (
 	A          []Component
@@ -166,12 +168,15 @@ func (t H5) Render(c Context) error     { return renderelem(c, "h5", t, t) }
 func (t H6) Render(c Context) error     { return renderelem(c, "h6", t, t) }
 func (t Head) Render(c Context) error   { return renderelem(c, "head", t, t) }
 func (t Input) Render(c Context) error  { return renderelem(c, "input", t, t) }
+func (t Link) Render(c Context) error   { return renderelem(c, "link", t, t) }
+func (t Meta) Render(c Context) error   { return renderelem(c, "meta", t, t) }
 func (t S) Render(c Context) error      { return renderelem(c, "s", t, t) }
 func (t Script) Render(c Context) error { return renderelem(c, "script", t, t) }
 func (t Style) Render(c Context) error  { return renderelem(c, "style", t, t) }
 
 func (t HTML) Render(c Context) error {
 	c.WriteHeader("Content-Type", "text/html")
+	c.WriteString("<!doctype html>\n")
 	return renderelem(c, "html", t, t)
 }
 

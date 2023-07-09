@@ -28,28 +28,34 @@ var app = App{
 		Path: "/",
 		Handle: HTML{
 			Head{
-				Style{Text{`
-					.app-container {
-						display: flex;
-						flex-direction: column;
-  						justify-content: center;
-  						align-items: center;						
-					}
-				`}},
+				Meta{CharsetUTF8},
+				Meta{Name{"viewport"}, Attr{"content", "width=device-width, initial-scale=1.0"}},
+				Link{
+					RelStylesheet,
+					CorsAnonymous,
+					Href{"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"},
+					Integrity{"sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"},
+				},
+				Script{
+					TypeJavascript,
+					CorsAnonymous,
+					Src{"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"},
+					Integrity{"sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"},
+				},
 			},
-			Body{Class{"app-container"},
+			Body{Class{"container px-4 text-center"},
 				Div{
 					H1{Text{`Todo Application`}},
 				},
-				Div{
+				Div{Class{"container"},
 					Form{MethodPOST, Action{"/add-todo"},
 						Input{TypeText, Name{"title"}},
 						Input{TypeSubmit, Value{`Add`}},
 					},
 				},
-				Each[*Todo]{Items: &data.Todos, Then: func(i *Todo) Component {
-					return Div{
-						H2{
+				Each[*Todo]{Items: &data.Todos, Thenf: func(i *Todo) Component {
+					return Div{Class{"container"},
+						Div{
 							Form{MethodPOST, Action{"/mark-done?title=", i.Title},
 								If{Cond: isTodoDone(i, true), Then: S{Text{i.Title}}},
 								If{Cond: isTodoDone(i, false), Then: Text{i.Title}},
