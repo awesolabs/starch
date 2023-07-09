@@ -9,7 +9,7 @@ var app = App{
 			Content: Div{
 				H3{Text{`Home Page`}},
 				If{Cond: hasName, Then: Div{
-					H4{Param{"name"}},
+					H4{CtxParam{"name"}},
 				}},
 			},
 		},
@@ -35,10 +35,14 @@ type Layout struct {
 }
 
 func (t *Layout) Render(c Context) error {
-	template := Html{
+	template := HTML{
 		Head{},
 		Body{
 			H1{Text{`Simple Website`}},
+			Div{
+				A{Href{"/"}, Text{`Home`}},
+				A{Href{"/about"}, Text{`About`}},
+			},
 			t.Content,
 		},
 	}

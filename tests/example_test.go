@@ -10,7 +10,7 @@ func Test_example(t *testing.T) {
 	_ = App{
 		Route{
 			Path: "/",
-			Handle: Html{
+			Handle: HTML{
 				Head{
 					Script{Attr{"type", "text/javascript"}, Text{`
 						console.log("Hello, World!");

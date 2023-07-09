@@ -8,7 +8,7 @@ import (
 )
 
 func Test_element_render_smoketest(t *testing.T) {
-	html := Html{
+	html := HTML{
 		Head{},
 		Body{
 			H1{Text{`heading`}},
@@ -29,7 +29,7 @@ func Test_element_render_smoketest(t *testing.T) {
 func Benchmark_element_render_smoketest(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		ctx := NewNoopContext()
-		html := Html{
+		html := HTML{
 			Head{},
 			Body{
 				Div{},
@@ -41,7 +41,7 @@ func Benchmark_element_render_smoketest(b *testing.B) {
 }
 
 func Test_element_renders_with_no_children(t *testing.T) {
-	html := Html{}
+	html := HTML{}
 	ctx := NewMemoryContext()
 	assert.NoError(t, html.Render(ctx))
 	result := ctx.Sink.String()
@@ -49,7 +49,7 @@ func Test_element_renders_with_no_children(t *testing.T) {
 }
 
 func Test_element_renders_with_attributes(t *testing.T) {
-	html := Html{Attr{"foo", "bar"}}
+	html := HTML{Attr{"foo", "bar"}}
 	ctx := NewMemoryContext()
 	assert.NoError(t, html.Render(ctx))
 	result := ctx.Sink.String()
@@ -57,11 +57,19 @@ func Test_element_renders_with_attributes(t *testing.T) {
 }
 
 func Test_element_renders_with_child(t *testing.T) {
-	html := Html{
+	html := HTML{
 		Head{},
 	}
 	ctx := NewMemoryContext()
 	assert.NoError(t, html.Render(ctx))
 	result := ctx.Sink.String()
 	assert.Equal(t, `<html><head></head></html>`, result)
+}
+
+func Test_input_renders_attributes(t *testing.T) {
+	elem := Input{TypeButton}
+	ctx := NewMemoryContext()
+	assert.NoError(t, elem.Render(ctx))
+	result := ctx.Sink.String()
+	assert.Equal(t, `<input type="button">`, result)
 }

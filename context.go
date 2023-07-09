@@ -3,7 +3,6 @@ package starch
 import (
 	"bytes"
 	"io"
-	"net/http"
 
 	"github.com/ucarion/urlpath"
 )
@@ -13,6 +12,7 @@ type Context interface {
 	io.Reader
 	GetParam(key string) string
 	GetVar(key string) any
+	Redirect(url string)
 	SetVar(key string, value any)
 	WriteHeader(string, string)
 	WriteStatus(int)
@@ -21,14 +21,6 @@ type Context interface {
 
 type AppContext struct {
 	Routes map[*urlpath.Path]Route
-}
-
-type HttpContext struct {
-	route    Route
-	request  *http.Request
-	response http.ResponseWriter
-	params   map[string]string
-	vars     map[string]any
 }
 
 type MemoryContext struct {

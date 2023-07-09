@@ -33,6 +33,8 @@ func (t *NoopContext) Next(c Component) error {
 	return c.Render(t)
 }
 
+func (t *NoopContext) Redirect(string) {}
+
 func (t *NoopContext) GetParam(string) string {
 	return ""
 }

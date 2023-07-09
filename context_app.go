@@ -23,7 +23,7 @@ func (t *AppContext) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if !ok {
 			continue
 		}
-		hctx := NewHttpContext().With(func(hc *HttpContext) {
+		hctx := NewHTTPContext().With(func(hc *HTTPContext) {
 			hc.params = match.Params
 			hc.request = r
 			hc.response = w

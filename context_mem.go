@@ -45,6 +45,8 @@ func (t *MemoryContext) WriteString(s string, args ...any) error {
 	return err
 }
 
+func (t *MemoryContext) Redirect(string) {}
+
 func (t *MemoryContext) GetParam(key string) string {
 	return t.Params[key]
 }

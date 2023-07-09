@@ -6,12 +6,7 @@ type Component interface {
 
 type App []Component
 
-type If struct {
-	Cond func(Context) bool
-	Then Component
-}
-
-type Param []string
+type CtxParam []string
 
 type RenderFunc []func(c Context) error
 
