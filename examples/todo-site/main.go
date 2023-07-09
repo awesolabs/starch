@@ -32,6 +32,10 @@ var app = App{
 				Meta{Name{"viewport"}, Attr{"content", "width=device-width, initial-scale=1.0"}},
 				Link{
 					RelStylesheet,
+					Href{"https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"},
+				},
+				Link{
+					RelStylesheet,
 					CorsAnonymous,
 					Href{"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"},
 					Integrity{"sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"},
@@ -57,9 +61,18 @@ var app = App{
 					return Div{Class{"container"},
 						Div{
 							Form{MethodPOST, Action{"/mark-done?title=", i.Title},
-								If{Cond: isTodoDone(i, true), Then: S{Text{i.Title}}},
-								If{Cond: isTodoDone(i, false), Then: Text{i.Title}},
-								Input{TypeSubmit, Value{`Done`}},
+								If{Cond: isTodoDone(i, true), Then: Elems{
+									S{Text{i.Title}},
+									Button{TypeSubmit, Class{"btn"},
+										I{Class{"bx bx-checkbox-checked"}},
+									},
+								}},
+								If{Cond: isTodoDone(i, false), Then: Elems{
+									Text{i.Title},
+									Button{TypeSubmit, Class{"btn"},
+										I{Class{"bx bx-checkbox"}},
+									},
+								}},
 							},
 						},
 					}

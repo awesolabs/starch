@@ -18,6 +18,7 @@ type (
 	Charset     []string
 	Class       []string
 	Crossorigin []string
+	FormMethod  []string
 	Href        []string
 	ID          []string
 	Integrity   []string
@@ -32,10 +33,25 @@ type (
 )
 
 var (
-	CorsAnonymous      = Crossorigin{"anonymous"}
-	CorsUseCredentials = Crossorigin{"use-credentials"}
-	CorsNone           = Crossorigin{""}
 	CharsetUTF8        = Charset{"UTF-8"}
+	CorsAnonymous      = Crossorigin{"anonymous"}
+	CorsNone           = Crossorigin{""}
+	CorsUseCredentials = Crossorigin{"use-credentials"}
+	FormMethodGET      = FormMethod{"get"}
+	FormMethodPOST     = FormMethod{"post"}
+	MethodGET          = Method{"get"}
+	MethodPOST         = Method{"post"}
+	RelExternal        = Rel{"external"}
+	RelHelp            = Rel{"help"}
+	RelLicense         = Rel{"license"}
+	RelNext            = Rel{"next"}
+	RelNoFollow        = Rel{"nofollow"}
+	RelNoOpener        = Rel{"noopener"}
+	RelNoReferrer      = Rel{"noreferrer"}
+	RelOpener          = Rel{"opener"}
+	RelPrev            = Rel{"prev"}
+	RelSearch          = Rel{"search"}
+	RelStylesheet      = Rel{"stylesheet"}
 	TargetBlank        = Target{"__blank"}
 	TargetParent       = Target{"__parent"}
 	TargetSelf         = Target{"__self"}
@@ -64,19 +80,6 @@ var (
 	TypeTime           = Type{"time"}
 	TypeURL            = Type{"url"}
 	TypeWeek           = Type{"week"}
-	RelExternal        = Rel{"external"}
-	RelHelp            = Rel{"help"}
-	RelLicense         = Rel{"license"}
-	RelNext            = Rel{"next"}
-	RelNoFollow        = Rel{"nofollow"}
-	RelNoOpener        = Rel{"noopener"}
-	RelNoReferrer      = Rel{"noreferrer"}
-	RelOpener          = Rel{"opener"}
-	RelPrev            = Rel{"prev"}
-	RelSearch          = Rel{"search"}
-	RelStylesheet      = Rel{"stylesheet"}
-	MethodGET          = Method{"get"}
-	MethodPOST         = Method{"post"}
 )
 
 func (t Action) Attribute()      {}
@@ -84,6 +87,7 @@ func (t Attr) Attribute()        {}
 func (t Charset) Attribute()     {}
 func (t Class) Attribute()       {}
 func (t Crossorigin) Attribute() {}
+func (t FormMethod) Attribute()  {}
 func (t Href) Attribute()        {}
 func (t ID) Attribute()          {}
 func (t Integrity) Attribute()   {}
@@ -105,6 +109,7 @@ func (t Attr) Render(c Context) error        { return renderattr(c, t[0], t, t[1
 func (t Charset) Render(c Context) error     { return renderattr(c, "charset", t, t...) }
 func (t Class) Render(c Context) error       { return renderattr(c, "class", t, t...) }
 func (t Crossorigin) Render(c Context) error { return renderattr(c, "crossorigin", t, t...) }
+func (t FormMethod) Render(c Context) error  { return renderattr(c, "formmethod", t, t...) }
 func (t Href) Render(c Context) error        { return renderattr(c, "href", t, t...) }
 func (t ID) Render(c Context) error          { return renderattr(c, "id", t, t...) }
 func (t Integrity) Render(c Context) error   { return renderattr(c, "integrity", t, t...) }

@@ -158,6 +158,7 @@ func (t Wbr) SelfClosing()     {}
 func (t A) Render(c Context) error      { return renderelem(c, "a", t, t) }
 func (t B) Render(c Context) error      { return renderelem(c, "b", t, t) }
 func (t Body) Render(c Context) error   { return renderelem(c, "body", t, t) }
+func (t Button) Render(c Context) error { return renderelem(c, "button", t, t) }
 func (t Div) Render(c Context) error    { return renderelem(c, "div", t, t) }
 func (t Form) Render(c Context) error   { return renderelem(c, "form", t, t) }
 func (t H1) Render(c Context) error     { return renderelem(c, "h1", t, t) }
@@ -167,6 +168,7 @@ func (t H4) Render(c Context) error     { return renderelem(c, "h4", t, t) }
 func (t H5) Render(c Context) error     { return renderelem(c, "h5", t, t) }
 func (t H6) Render(c Context) error     { return renderelem(c, "h6", t, t) }
 func (t Head) Render(c Context) error   { return renderelem(c, "head", t, t) }
+func (t I) Render(c Context) error      { return renderelem(c, "i", t, t) }
 func (t Input) Render(c Context) error  { return renderelem(c, "input", t, t) }
 func (t Link) Render(c Context) error   { return renderelem(c, "link", t, t) }
 func (t Meta) Render(c Context) error   { return renderelem(c, "meta", t, t) }
