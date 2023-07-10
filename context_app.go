@@ -32,5 +32,7 @@ func (t *AppContext) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if err := route.Render(hctx); err != nil {
 			panic(err)
 		}
+		return
 	}
+	http.DefaultServeMux.ServeHTTP(w, r)
 }
