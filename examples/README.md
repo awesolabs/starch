@@ -4,6 +4,8 @@ Various example sites and apps to demonstrate functionality
 
 # Future Example Ideas
 
+Didn't write this, clearly:
+
 * `Todo List App`: A simple task management or todo list application is a common example used to demonstrate basic CRUD operations (Create, Read, Update, Delete).
 * `Blog Platform`: A blogging platform can showcase features like user authentication, text editing, media upload, comment system, likes, and categorization.
 * `E-Commerce Site`: This type of application can demonstrate more complex functionalities like shopping cart management, product search and filters, inventory management, payment gateway integration, and customer reviews.
