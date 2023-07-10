@@ -4,5 +4,5 @@ use (
 	.
 	./examples/hello-world
 	./examples/simple-site
-	./examples/todo-site
+	./examples/todo-app
 )
