@@ -79,7 +79,6 @@ var app = App{
 									Ul{Class{"list-group mb-0"},
 										Each[*Todo]{Items: &data.Todos, Thenf: func(t *Todo) Component {
 											done := isTodoDone(t, true)
-											notdone := isTodoDone(t, false)
 											return Li{Class{"list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2"},
 												Form{Class{"d-flex align-items-center"}, MethodPOST, Action{TodoDoneEndpoint, "?title=", t.Title},
 													Input{
@@ -88,8 +87,10 @@ var app = App{
 														Attr{"onChange", "this.form.submit()"},
 														AttrIf{Cond: done, Then: Attr{"checked"}},
 													},
-													If{Cond: done, Then: S{Text{t.Title}}},
-													If{Cond: notdone, Then: Text{t.Title}},
+													If{Cond: done,
+														Then: S{Text{t.Title}},
+														Else: Text{t.Title},
+													},
 												},
 												Form{MethodPOST, Action{TodoDeleteEndpoint, "?title=", t.Title},
 													Button{TypeSubmit, StyleAttr{"border:0;background:none;"},
