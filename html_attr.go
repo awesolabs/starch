@@ -18,12 +18,14 @@ type (
 	Charset     []string
 	Class       []string
 	Crossorigin []string
+	FormAction  []string
 	FormMethod  []string
 	Href        []string
 	ID          []string
 	Integrity   []string
 	Method      []string
 	Name        []string
+	Placeholder []string
 	Rel         []string
 	Src         []string
 	StyleAttr   []string
@@ -87,12 +89,14 @@ func (t Attr) Attribute()        {}
 func (t Charset) Attribute()     {}
 func (t Class) Attribute()       {}
 func (t Crossorigin) Attribute() {}
+func (t FormAction) Attribute()  {}
 func (t FormMethod) Attribute()  {}
 func (t Href) Attribute()        {}
 func (t ID) Attribute()          {}
 func (t Integrity) Attribute()   {}
 func (t Method) Attribute()      {}
 func (t Name) Attribute()        {}
+func (t Placeholder) Attribute() {}
 func (t Rel) Attribute()         {}
 func (t Src) Attribute()         {}
 func (t StyleAttr) Attribute()   {}
@@ -100,21 +104,24 @@ func (t Target) Attribute()      {}
 func (t Type) Attribute()        {}
 func (t Value) Attribute()       {}
 
-func (t Action) AttrValueMerge() {}
-func (t Href) AttrValueMerge()   {}
-func (t Value) AttrValueMerge()  {}
+func (t Action) AttrValueMerge()     {}
+func (t FormAction) AttrValueMerge() {}
+func (t Href) AttrValueMerge()       {}
+func (t Value) AttrValueMerge()      {}
 
 func (t Action) Render(c Context) error      { return renderattr(c, "action", t, t...) }
 func (t Attr) Render(c Context) error        { return renderattr(c, t[0], t, t[1:]...) }
 func (t Charset) Render(c Context) error     { return renderattr(c, "charset", t, t...) }
 func (t Class) Render(c Context) error       { return renderattr(c, "class", t, t...) }
 func (t Crossorigin) Render(c Context) error { return renderattr(c, "crossorigin", t, t...) }
+func (t FormAction) Render(c Context) error  { return renderattr(c, "formaction", t, t...) }
 func (t FormMethod) Render(c Context) error  { return renderattr(c, "formmethod", t, t...) }
 func (t Href) Render(c Context) error        { return renderattr(c, "href", t, t...) }
 func (t ID) Render(c Context) error          { return renderattr(c, "id", t, t...) }
 func (t Integrity) Render(c Context) error   { return renderattr(c, "integrity", t, t...) }
 func (t Method) Render(c Context) error      { return renderattr(c, "method", t, t...) }
 func (t Name) Render(c Context) error        { return renderattr(c, "name", t, t...) }
+func (t Placeholder) Render(c Context) error { return renderattr(c, "placeholder", t, t...) }
 func (t Rel) Render(c Context) error         { return renderattr(c, "rel", t, t...) }
 func (t Src) Render(c Context) error         { return renderattr(c, "src", t, t...) }
 func (t StyleAttr) Render(c Context) error   { return renderattr(c, "style", t, t...) }

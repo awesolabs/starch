@@ -23,6 +23,12 @@ var data = &AppData{
 	},
 }
 
+var (
+	TodoAddEndpoint    = "/todo/add"
+	TodoDoneEndpoint   = "/todo/done"
+	TodoDeleteEndpoint = "/todo/delete"
+)
+
 var app = App{
 	Route{
 		Path: "/",
@@ -47,41 +53,62 @@ var app = App{
 					Integrity{"sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"},
 				},
 			},
-			Body{Class{"container px-4 text-center"},
-				Div{
-					H1{Text{`Todo Application`}},
-				},
-				Div{Class{"container"},
-					Form{MethodPOST, Action{"/add-todo"},
-						Input{TypeText, Name{"title"}},
-						Input{TypeSubmit, Value{`Add`}},
-					},
-				},
-				Each[*Todo]{Items: &data.Todos, Thenf: func(i *Todo) Component {
-					return Div{Class{"container"},
-						Div{
-							Form{MethodPOST, Action{"/mark-done?title=", i.Title},
-								If{Cond: isTodoDone(i, true), Then: Elems{
-									S{Text{i.Title}},
-									Button{TypeSubmit, Class{"btn"},
-										I{Class{"bx bx-checkbox-checked"}},
+			Body{
+				Div{Class{"container py-5 h-100"},
+					Div{Class{"row d-flex justify-content-center align-items-center h-100"},
+						Div{Class{"col col-xl-10"},
+							Div{Class{"card"}, StyleAttr{"border-radius: 15px"},
+								Div{Class{"card-body p-5"},
+									Form{Class{"d-flex justify-content-center align-items-top mb-4"},
+										Div{Class{"form-outline flex-fill"},
+											Input{
+												TypeText,
+												Name{"title"},
+												Class{"form-control form-control-lg"},
+												Placeholder{"enter a title for your todo"},
+											},
+										},
+										Button{
+											TypeSubmit,
+											FormMethodPOST,
+											FormAction{TodoAddEndpoint},
+											Class{"btn btn-primary btn-lg ms-2"},
+											Text{"Add"},
+										},
 									},
-								}},
-								If{Cond: isTodoDone(i, false), Then: Elems{
-									Text{i.Title},
-									Button{TypeSubmit, Class{"btn"},
-										I{Class{"bx bx-checkbox"}},
+									Ul{Class{"list-group mb-0"},
+										Each[*Todo]{Items: &data.Todos, Thenf: func(t *Todo) Component {
+											done := isTodoDone(t, true)
+											notdone := isTodoDone(t, false)
+											return Li{Class{"list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2"},
+												Form{Class{"d-flex align-items-center"}, MethodPOST, Action{TodoDoneEndpoint, "?title=", t.Title},
+													Input{
+														TypeCheckbox,
+														Class{"form-check-input me-2"},
+														Attr{"onChange", "this.form.submit()"},
+														AttrIf{Cond: done, Then: Attr{"checked"}},
+													},
+													If{Cond: done, Then: S{Text{t.Title}}},
+													If{Cond: notdone, Then: Text{t.Title}},
+												},
+												Form{MethodPOST, Action{TodoDeleteEndpoint, "?title=", t.Title},
+													Button{TypeSubmit, StyleAttr{"border:0;background:none;"},
+														I{Class{"bx bxs-x-square"}},
+													},
+												},
+											}
+										}},
 									},
-								}},
+								},
 							},
 						},
-					}
-				}},
+					},
+				},
 			},
 		},
 	},
 	Route{
-		Path: "/mark-done",
+		Path: TodoDoneEndpoint,
 		Handle: RenderFunc{func(c Context) error {
 			title := c.GetParam("title")
 			for _, todo := range data.Todos {
@@ -94,13 +121,28 @@ var app = App{
 		}},
 	},
 	Route{
-		Path: "/add-todo",
+		Path: TodoAddEndpoint,
 		Handle: RenderFunc{func(c Context) error {
 			title := c.GetParam("title")
 			log.Println(title)
 			data.Todos = append(data.Todos, &Todo{
 				Title: title,
 			})
+			c.Redirect("/")
+			return nil
+		}},
+	},
+	Route{
+		Path: TodoDeleteEndpoint,
+		Handle: RenderFunc{func(c Context) error {
+			title := c.GetParam("title")
+			log.Println(title)
+			for i, todo := range data.Todos {
+				if todo.Title == title {
+					copy(data.Todos[i:], data.Todos[i+1:])
+					data.Todos = data.Todos[:len(data.Todos)-1]
+				}
+			}
 			c.Redirect("/")
 			return nil
 		}},

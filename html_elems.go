@@ -1,6 +1,7 @@
 package starch
 
 import (
+	"html"
 	"strings"
 )
 
@@ -99,6 +100,7 @@ type (
 	Pre        []Component
 	Progress   []Component
 	Q          []Component
+	RawHTML    []string
 	Rp         []Component
 	Rt         []Component
 	Ruby       []Component
@@ -155,26 +157,31 @@ func (t Source) SelfClosing()  {}
 func (t Track) SelfClosing()   {}
 func (t Wbr) SelfClosing()     {}
 
-func (t A) Render(c Context) error      { return renderelem(c, "a", t, t) }
-func (t B) Render(c Context) error      { return renderelem(c, "b", t, t) }
-func (t Body) Render(c Context) error   { return renderelem(c, "body", t, t) }
-func (t Button) Render(c Context) error { return renderelem(c, "button", t, t) }
-func (t Div) Render(c Context) error    { return renderelem(c, "div", t, t) }
-func (t Form) Render(c Context) error   { return renderelem(c, "form", t, t) }
-func (t H1) Render(c Context) error     { return renderelem(c, "h1", t, t) }
-func (t H2) Render(c Context) error     { return renderelem(c, "h2", t, t) }
-func (t H3) Render(c Context) error     { return renderelem(c, "h3", t, t) }
-func (t H4) Render(c Context) error     { return renderelem(c, "h4", t, t) }
-func (t H5) Render(c Context) error     { return renderelem(c, "h5", t, t) }
-func (t H6) Render(c Context) error     { return renderelem(c, "h6", t, t) }
-func (t Head) Render(c Context) error   { return renderelem(c, "head", t, t) }
-func (t I) Render(c Context) error      { return renderelem(c, "i", t, t) }
-func (t Input) Render(c Context) error  { return renderelem(c, "input", t, t) }
-func (t Link) Render(c Context) error   { return renderelem(c, "link", t, t) }
-func (t Meta) Render(c Context) error   { return renderelem(c, "meta", t, t) }
-func (t S) Render(c Context) error      { return renderelem(c, "s", t, t) }
-func (t Script) Render(c Context) error { return renderelem(c, "script", t, t) }
-func (t Style) Render(c Context) error  { return renderelem(c, "style", t, t) }
+func (t A) Render(c Context) error        { return renderelem(c, "a", t, t) }
+func (t B) Render(c Context) error        { return renderelem(c, "b", t, t) }
+func (t Body) Render(c Context) error     { return renderelem(c, "body", t, t) }
+func (t Button) Render(c Context) error   { return renderelem(c, "button", t, t) }
+func (t Div) Render(c Context) error      { return renderelem(c, "div", t, t) }
+func (t Form) Render(c Context) error     { return renderelem(c, "form", t, t) }
+func (t H1) Render(c Context) error       { return renderelem(c, "h1", t, t) }
+func (t H2) Render(c Context) error       { return renderelem(c, "h2", t, t) }
+func (t H3) Render(c Context) error       { return renderelem(c, "h3", t, t) }
+func (t H4) Render(c Context) error       { return renderelem(c, "h4", t, t) }
+func (t H5) Render(c Context) error       { return renderelem(c, "h5", t, t) }
+func (t H6) Render(c Context) error       { return renderelem(c, "h6", t, t) }
+func (t Head) Render(c Context) error     { return renderelem(c, "head", t, t) }
+func (t I) Render(c Context) error        { return renderelem(c, "i", t, t) }
+func (t Input) Render(c Context) error    { return renderelem(c, "input", t, t) }
+func (t Label) Render(c Context) error    { return renderelem(c, "label", t, t) }
+func (t Li) Render(c Context) error       { return renderelem(c, "li", t, t) }
+func (t Link) Render(c Context) error     { return renderelem(c, "link", t, t) }
+func (t Meta) Render(c Context) error     { return renderelem(c, "meta", t, t) }
+func (t S) Render(c Context) error        { return renderelem(c, "s", t, t) }
+func (t Script) Render(c Context) error   { return renderelem(c, "script", t, t) }
+func (t Section) Render(c Context) error  { return renderelem(c, "section", t, t) }
+func (t Style) Render(c Context) error    { return renderelem(c, "style", t, t) }
+func (t Textarea) Render(c Context) error { return renderelem(c, "textarea", t, t) }
+func (t Ul) Render(c Context) error       { return renderelem(c, "ul", t, t) }
 
 func (t HTML) Render(c Context) error {
 	c.WriteHeader("Content-Type", "text/html")
@@ -183,6 +190,14 @@ func (t HTML) Render(c Context) error {
 }
 
 func (t Text) Render(c Context) error {
+	return c.WriteString(
+		html.EscapeString(
+			strings.Join(t, ""),
+		),
+	)
+}
+
+func (t RawHTML) Render(c Context) error {
 	return c.WriteString(strings.Join(t, ""))
 }
 
