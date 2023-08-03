@@ -20,7 +20,7 @@ func NewHTTPContext() *HTTPContext {
 	}
 }
 
-func (t *HTTPContext) GetVar(key string) any {
+func (t *HTTPContext) Var(key string) any {
 	return t.vars[key]
 }
 
@@ -36,16 +36,18 @@ func (t *HTTPContext) Write(buff []byte) (int, error) {
 	return t.response.Write(buff)
 }
 
-func (t *HTTPContext) WriteHeader(key string, value string) {
+func (t *HTTPContext) WriteHeader(key string, value string) error {
 	t.response.Header().Add(key, value)
+	return nil
 }
 
-func (t *HTTPContext) WriteStatus(code int) {
+func (t *HTTPContext) WriteStatus(code int) error {
 	t.response.WriteHeader(code)
+	return nil
 }
 
 func (t *HTTPContext) WriteString(s string, args ...any) error {
-	_, err := t.response.Write([]byte(fmt.Sprintf(s, args...)))
+	_, err := t.Write([]byte(fmt.Sprintf(s, args...)))
 	return err
 }
 
@@ -54,11 +56,16 @@ func (t *HTTPContext) With(f func(*HTTPContext)) *HTTPContext {
 	return t
 }
 
-func (t *HTTPContext) Redirect(url string) {
+func (t *HTTPContext) Redirect(url string) error {
 	http.Redirect(t.response, t.request, url, http.StatusMovedPermanently)
+	return nil
 }
 
-func (t *HTTPContext) GetParam(key string) string {
+func (t *HTTPContext) Render(c Component) error {
+	return c.Render(t)
+}
+
+func (t *HTTPContext) Param(key string) string {
 	param, ok := t.params[key]
 	if !ok {
 		param = t.request.URL.Query().Get(key)

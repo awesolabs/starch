@@ -50,7 +50,7 @@ func (t *Layout) Render(c Context) error {
 }
 
 func hasName(c Context) bool {
-	if c.GetParam("name") != "" {
+	if c.Param("name") != "" {
 		return true
 	}
 	return false

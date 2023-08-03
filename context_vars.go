@@ -2,7 +2,7 @@ package starch
 
 func GetVar[T comparable](c Context, key string, defaultv ...T) T {
 	var nilt T
-	v := c.GetVar(key)
+	v := c.Var(key)
 	if v != nil {
 		return v.(T)
 	}

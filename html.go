@@ -5,6 +5,10 @@ type SelfClosing interface {
 	SelfClosing()
 }
 
+type FormatBlock interface {
+	FormatBlock()
+}
+
 type PhrasingContent interface {
 	Component
 	PhrasingContent()

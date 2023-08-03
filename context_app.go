@@ -2,9 +2,14 @@ package starch
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/ucarion/urlpath"
 )
+
+type AppContext struct {
+	Routes map[*urlpath.Path]Route
+}
 
 func NewAppContext() *AppContext {
 	return &AppContext{
@@ -28,7 +33,11 @@ func (t *AppContext) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			hc.request = r
 			hc.response = w
 			hc.route = route
+			for key, value := range r.URL.Query() {
+				hc.params[key] = strings.Join(value, "")
+			}
 		})
+		hctx.SetVar(VarHTTPMethod, r.Method)
 		if err := route.Render(hctx); err != nil {
 			panic(err)
 		}

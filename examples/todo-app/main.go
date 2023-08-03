@@ -79,7 +79,10 @@ var app = App{
 										Each[*Todo]{Items: &data.Todos, Thenf: func(t *Todo) Component {
 											done := isTodoDone(t, true)
 											return Li{Class{"list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2"},
-												Form{Class{"d-flex align-items-center"}, MethodPOST, Action{TodoDoneEndpoint, "?title=", t.Title},
+												Form{
+													MethodPOST,
+													Class{"d-flex align-items-center"},
+													Action{TodoDoneEndpoint, "?title=", t.Title},
 													Input{
 														TypeCheckbox,
 														Class{"form-check-input me-2"},
@@ -110,7 +113,7 @@ var app = App{
 	Route{
 		Path: TodoDoneEndpoint,
 		Handle: RenderFunc{func(c Context) error {
-			title := c.GetParam("title")
+			title := c.Param("title")
 			for _, todo := range data.Todos {
 				if todo.Title == title {
 					todo.Done = !todo.Done
@@ -123,7 +126,7 @@ var app = App{
 	Route{
 		Path: TodoAddEndpoint,
 		Handle: RenderFunc{func(c Context) error {
-			title := c.GetParam("title")
+			title := c.Param("title")
 			log.Println(title)
 			data.Todos = append(data.Todos, &Todo{
 				Title: title,
@@ -135,7 +138,7 @@ var app = App{
 	Route{
 		Path: TodoDeleteEndpoint,
 		Handle: RenderFunc{func(c Context) error {
-			title := c.GetParam("title")
+			title := c.Param("title")
 			log.Println(title)
 			for i, todo := range data.Todos {
 				if todo.Title == title {

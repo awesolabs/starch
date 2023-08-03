@@ -157,6 +157,9 @@ func (t Source) SelfClosing()  {}
 func (t Track) SelfClosing()   {}
 func (t Wbr) SelfClosing()     {}
 
+func (t Meta) FormatBlock() {}
+func (t Link) FormatBlock() {}
+
 func (t A) Render(c Context) error        { return renderelem(c, "a", t, t) }
 func (t B) Render(c Context) error        { return renderelem(c, "b", t, t) }
 func (t Body) Render(c Context) error     { return renderelem(c, "body", t, t) }
@@ -206,7 +209,6 @@ func (t Text) CSSComponent() {}
 func renderelem[T Component](c Context, tag string, target Component, children []T) error {
 	indent := GetVar(c, VarIndent, 0)
 	indentstr := strings.Repeat("\t", indent)
-	c.WriteString("%s<%s", indentstr, tag)
 	_, selfclose := target.(SelfClosing)
 	var attributes []Component
 	var elements []Component
@@ -218,6 +220,7 @@ func renderelem[T Component](c Context, tag string, target Component, children [
 		}
 		elements = append(elements, child)
 	}
+	c.WriteString("%s<%s", indentstr, tag)
 	for _, attr := range attributes {
 		if err := attr.Render(c); err != nil {
 			return err
@@ -227,14 +230,17 @@ func renderelem[T Component](c Context, tag string, target Component, children [
 		return err
 	}
 	if !selfclose {
-		if err := c.WriteString("\n"); err != nil {
-			return err
-		}
-		for _, elem := range elements {
+		c.SetVar(VarIndent, indent+1)
+		for idx, elem := range elements {
+			_, fmtblock := elem.(FormatBlock)
+			if idx == 0 || fmtblock {
+				c.WriteString("\n")
+			}
 			if err := elem.Render(c); err != nil {
 				return err
 			}
 		}
+		c.SetVar(VarIndent, indent)
 	}
 	if !selfclose {
 		if err := c.WriteString("%s</%s>", indentstr, tag); err != nil {

@@ -1,5 +1,6 @@
 package starch
 
 var (
-	VarIterItem = "__iteritem"
+	VarIterItem   = "__iteritem"
+	VarHTTPMethod = "__httpmethod"
 )
